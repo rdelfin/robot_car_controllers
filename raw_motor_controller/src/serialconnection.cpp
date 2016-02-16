@@ -34,12 +34,14 @@ SerialConnection::SerialConnection(const std::string& device_name, int baud_rate
     fd = open(device_name.c_str() , O_RDWR | O_NOCTTY | O_NDELAY);
 
     struct termios options;
-    options.c_cflag = B115200 | CS8 | CLOCAL | CREAD;
+    options.c_cflag = baud_rate | CS8 | CLOCAL | CREAD;
     options.c_iflag = IGNPAR;
     options.c_oflag = 0;
     options.c_lflag = 0;
     tcflush(fd, TCIFLUSH);
     tcsetattr(fd, TCSANOW, &options);
+    
+    fstream = fdopen(fd, "rw");
 }
 
 bool SerialConnection::recieve_data(std::stringbuf& buffer)
@@ -57,6 +59,24 @@ bool SerialConnection::recieve_data(std::stringbuf& buffer)
     rx_buffer[len] = '\0';
     
     buffer.sputn(rx_buffer, len);
+    return true;
+}
+
+char SerialConnection::recieve_character()
+{
+    return fgetc(fstream);
+}
+
+bool SerialConnection::recieve_line(std::stringbuf& buffer)
+{
+    char c;
+    while((c = fgetc(fstream)) != '\n') {
+        // Default value for UART streams (I think...)
+        if(c != 255)
+            buffer.sputc(c);
+    }
+    
+    // TODO: Implement return false on timeout event.
     return true;
 }
 

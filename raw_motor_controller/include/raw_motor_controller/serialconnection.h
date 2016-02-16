@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <stdio.h>
 #include <string>
 #include <sstream>
 #include <termios.h>
@@ -28,11 +29,16 @@ public:
     SerialConnection(const std::string& device_name, int baud_rate);
     
     void send_data(const std::string&);
+    
     bool recieve_data(std::stringbuf &buffer);
+    char recieve_character();
+    // TODO: Implement a timeout mechanism
+    bool recieve_line(std::stringbuf &buffer);
     
     ~SerialConnection();
     
 private:
     int fd;
+    FILE* fstream;
     std::string device_name;
 };
