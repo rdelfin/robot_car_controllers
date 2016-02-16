@@ -44,7 +44,7 @@ SerialConnection::SerialConnection(const std::string& device_name, int baud_rate
     fstream = fdopen(fd, "rw");
 }
 
-bool SerialConnection::recieve_data(std::stringbuf& buffer)
+bool SerialConnection::recieve_data(std::stringstream& buffer)
 {
     char rx_buffer[255];
     int len = read(fd, rx_buffer, 254);
@@ -58,7 +58,7 @@ bool SerialConnection::recieve_data(std::stringbuf& buffer)
     // We cannot count on read(2) to null-terminate the string
     rx_buffer[len] = '\0';
     
-    buffer.sputn(rx_buffer, len);
+    buffer << rx_buffer;
     return true;
 }
 
@@ -67,22 +67,23 @@ char SerialConnection::recieve_character()
     return fgetc(fstream);
 }
 
-bool SerialConnection::recieve_line(std::stringbuf& buffer)
+bool SerialConnection::recieve_line(std::stringstream &buffer)
 {
     char c;
     while((c = fgetc(fstream)) != '\n') {
         // Default value for UART streams (I think...)
         if(c != 255)
-            buffer.sputc(c);
+            buffer.put(c);
     }
     
     // TODO: Implement return false on timeout event.
     return true;
 }
 
-void SerialConnection::send_data(const std::string& data)
+bool SerialConnection::send_data(const std::string &data)
 {
-    int writter_bytes = write(fd, data.c_str(), data.length());
+    int written_bytes = write(fd, data.c_str(), data.length());
+    return written_bytes == data.length();
 }
 
 

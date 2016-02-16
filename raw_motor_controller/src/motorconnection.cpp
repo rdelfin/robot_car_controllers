@@ -56,14 +56,12 @@ bool MotorConnection::sendAction(motor_speed_t speed, direction_t direction, int
         return false;
     }
     
-    std::stringbuf msg, rx_buffer;
-    msg.setbuf("", 255);
-    rx_buffer.setbuf("", 255);
+    std::stringstream msg, rx_buffer;
     
-    msg.sputc(motor_number == MOTOR_LEFT ? '' : '2');  // Motor number:    M
-    msg.sputc(direction == FORWARD ? 'f' : 'r');       // Motor direction: D
-    msg.sputc('0' + speed);                            // Motor velocity:  V
-    msg.sputc('\r');                                   // Delimiter (cartridge return)
+    msg.put(motor_number == MOTOR_LEFT ? '1' : '2');  // Motor number:    M
+    msg.put(direction == FORWARD ? 'f' : 'r');        // Motor direction: D
+    msg.put('0' + speed);                             // Motor velocity:  V
+    msg.put('\r');                                    // Delimiter (cartridge return)
     
     if(!send_data(msg.str())) {
         ROS_ERROR_STREAM("SEND ACTION: Failed to send data: " << msg.str());
@@ -73,7 +71,7 @@ bool MotorConnection::sendAction(motor_speed_t speed, direction_t direction, int
     bool resend = false;
     
     do {
-        rx_buffer.setbuf("", 255);
+        rx_buffer.str("");
         
         // Recieve first line: Always a repetition of the command.
         if(!recieve_line(rx_buffer)) {
@@ -86,7 +84,7 @@ bool MotorConnection::sendAction(motor_speed_t speed, direction_t direction, int
             return false;
         }
         
-        rx_buffer.setbuf("", 255);
+        rx_buffer.str("");
         
         // Recieve second line: Either an error message or a POSITIVE number (tested).
         if(!recieve_line(rx_buffer)) {

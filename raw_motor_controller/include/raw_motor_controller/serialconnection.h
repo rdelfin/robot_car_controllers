@@ -28,12 +28,12 @@ public:
     SerialConnection();
     SerialConnection(const std::string& device_name, int baud_rate);
     
-    void send_data(const std::string&);
+    bool send_data(const std::string&);
     
-    bool recieve_data(std::stringbuf &buffer);
+    bool recieve_data(std::stringstream &buffer);
     char recieve_character();
     // TODO: Implement a timeout mechanism
-    bool recieve_line(std::stringbuf &buffer);
+    bool recieve_line(std::stringstream &buffer);
     
     ~SerialConnection();
     
