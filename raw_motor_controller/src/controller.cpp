@@ -17,7 +17,37 @@
 
 #include <ros/ros.h>
 
+#include "raw_motor_controller/motorconnection.h"
+
 int main(int argc, char* argv[]) {
     ros::init(argc, argv, "raw_motor_controller_node");
-    ros::spin();
+    
+    ros::NodeHandle n;
+    
+    ros::Rate r(100);
+    bool enable = false;
+    MotorConnection front("/dev/ttyAMA0"), back("/dev/ttyUSB0");
+    
+    while(ros::ok()) {
+        //if(enable) {
+        back.sendAction(PWM_9, FORWARD, MOTOR_RIGHT);
+        back.sendAction(PWM_9, BACKWARD, MOTOR_LEFT);
+        front.sendAction(PWM_9, FORWARD, MOTOR_RIGHT);
+        front.sendAction(PWM_9, FORWARD, MOTOR_LEFT);
+        //}
+        //else {
+        //    con.sendAction(PWM_OFF, FORWARD, MOTOR_LEFT);
+        //    con.sendAction(PWM_OFF, FORWARD, MOTOR_RIGHT);
+        //}
+        
+        //enable = !enable;
+        
+        ros::spinOnce();
+        r.sleep();
+    }
+    
+    back.sendAction(PWM_OFF, FORWARD, MOTOR_RIGHT);
+    back.sendAction(PWM_OFF, FORWARD, MOTOR_LEFT);
+    front.sendAction(PWM_OFF, FORWARD, MOTOR_RIGHT);
+    front.sendAction(PWM_OFF, FORWARD, MOTOR_LEFT);
 }

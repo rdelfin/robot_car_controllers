@@ -79,8 +79,8 @@ bool MotorConnection::sendAction(motor_speed_t speed, direction_t direction, int
             return false;
         }
         
-        if(rx_buffer.str()[0] != '>' && rx_buffer.str() != msg.str().substr(0, 2)) {
-            ROS_ERROR_STREAM("SEND ACTION: Recieved unexpected response \"" << rx_buffer.str() << "\". Exiting...");
+        if(rx_buffer.str()[0] != '>' && rx_buffer.str().substr(0, 2) != msg.str().substr(0, 2)) {
+            ROS_ERROR_STREAM("SEND ACTION: Recieved unexpected response \"" << rx_buffer.str().substr(0, 2) << "\". Exiting...\n");
             return false;
         }
         
