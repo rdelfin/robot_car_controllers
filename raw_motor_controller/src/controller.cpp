@@ -29,18 +29,10 @@ int main(int argc, char* argv[]) {
     MotorConnection front("/dev/ttyAMA0"), back("/dev/ttyUSB0");
     
     while(ros::ok()) {
-        //if(enable) {
         back.sendAction(PWM_9, FORWARD, MOTOR_RIGHT);
         back.sendAction(PWM_9, BACKWARD, MOTOR_LEFT);
         front.sendAction(PWM_9, FORWARD, MOTOR_RIGHT);
         front.sendAction(PWM_9, FORWARD, MOTOR_LEFT);
-        //}
-        //else {
-        //    con.sendAction(PWM_OFF, FORWARD, MOTOR_LEFT);
-        //    con.sendAction(PWM_OFF, FORWARD, MOTOR_RIGHT);
-        //}
-        
-        //enable = !enable;
         
         ros::spinOnce();
         r.sleep();

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(raw_motor_controller)
 
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -131,7 +133,7 @@ include_directories(
 # add_dependencies(raw_motor_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(raw_motor_controller_node src/controller.cpp src/serialconnection.cpp src/motorconnection.cpp)
+add_executable(raw_motor_controller_node src/controller.cpp src/serialconnection.cpp src/motorconnection.cpp src/motorcommandserver.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

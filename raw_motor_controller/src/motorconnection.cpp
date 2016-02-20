@@ -30,7 +30,8 @@ MotorConnection::MotorConnection()
 MotorConnection::MotorConnection(const std::string& device_name)
     : SerialConnection(device_name, B115200)
 {
-    
+    sendAction(PWM_OFF, FORWARD, MOTOR_LEFT);
+    sendAction(PWM_OFF, FORWARD, MOTOR_RIGHT);
 }
 
 /* Format for a message has 4 characters: "MDV\r" -
