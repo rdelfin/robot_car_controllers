@@ -21,7 +21,8 @@ MotorCommandServer::MotorCommandServer(std::string name)
     : name(name),
     server(nh, name, boost::bind(&MotorCommandServer::executeCB, this, _1), false)
 {
-    
+    server.start();
+    ROS_INFO_STREAM("Motor Command actionlib server created with name" << name);
 }
 
 

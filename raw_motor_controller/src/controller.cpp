@@ -17,29 +17,14 @@
 
 #include <ros/ros.h>
 
-#include "raw_motor_controller/motorconnection.h"
+#include "raw_motor_controller/motorcommandserver.h"
 
 int main(int argc, char* argv[]) {
     ros::init(argc, argv, "raw_motor_controller_node");
     
     ros::NodeHandle n;
     
-    ros::Rate r(100);
-    bool enable = false;
-    MotorConnection front("/dev/ttyAMA0"), back("/dev/ttyUSB0");
+    MotorCommandServer server("controllers/raw_motor");
     
-    while(ros::ok()) {
-        back.sendAction(PWM_9, FORWARD, MOTOR_RIGHT);
-        back.sendAction(PWM_9, BACKWARD, MOTOR_LEFT);
-        front.sendAction(PWM_9, FORWARD, MOTOR_RIGHT);
-        front.sendAction(PWM_9, FORWARD, MOTOR_LEFT);
-        
-        ros::spinOnce();
-        r.sleep();
-    }
-    
-    back.sendAction(PWM_OFF, FORWARD, MOTOR_RIGHT);
-    back.sendAction(PWM_OFF, FORWARD, MOTOR_LEFT);
-    front.sendAction(PWM_OFF, FORWARD, MOTOR_RIGHT);
-    front.sendAction(PWM_OFF, FORWARD, MOTOR_LEFT);
+    ros::spin();
 }
