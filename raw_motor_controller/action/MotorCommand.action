@@ -1,13 +1,13 @@
 #Constants used mostly for goals
 bool FORWARD=1
 bool BACKWARD=0
-bool RIGHT=1
-bool LEFT=2
+bool LEFT=1
+bool RIGHT=2
 
 # Goal definition
-bool direction  # Direction of motion: FORWARD or BACKWARD
+int8 direction  # Direction of motion: FORWARD or BACKWARD
 int8 power      # Power of the motion: Values 0 through 9, 0 for off, 9 for 100%. 
-bool motor      # Motor to activate. Either LEFT or RIGHT
+int8 motor      # Motor to activate. Either LEFT or RIGHT
 string device   # Serial device name where the controller is located. Ex: /dev/ttyAMA0
 ---
 # Result definition

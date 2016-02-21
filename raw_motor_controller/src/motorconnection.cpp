@@ -64,6 +64,7 @@ bool MotorConnection::sendAction(motor_speed_t speed, direction_t direction, int
     msg.put('0' + speed);                             // Motor velocity:  V
     msg.put('\r');                                    // Delimiter (cartridge return)
     
+    ROS_INFO()
     if(!send_data(msg.str())) {
         ROS_ERROR_STREAM("SEND ACTION: Failed to send data: " << msg.str());
         return false;

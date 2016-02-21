@@ -28,8 +28,12 @@ MotorCommandServer::MotorCommandServer(std::string name)
 
 void MotorCommandServer::executeCB(const raw_motor_controller::MotorCommandGoalConstPtr& goal)
 {
+    ROS_INFO("RECIECED GOAL WITH DATA:\n\tDevice: \"%s\"\n\tDirection (1 or 2): %d\n\tPower: %d\n\tMotor: %d",
+             goal->device.c_str(), (int)goal->direction, (int)goal->power, (int)goal->motor);
+    
     // The file has not been opened. Create a new connection
     if(connections.find(goal->device) ==  connections.end()) {
+        ROS_INFO("Connection to device created");
         connections[goal->device] = MotorConnection(goal->device);
     }
     
@@ -45,6 +49,7 @@ void MotorCommandServer::executeCB(const raw_motor_controller::MotorCommandGoalC
     if(!success) {
         ROS_INFO("There was an error servicing request.");
     }
+    
     
     result.successful = success;
     

@@ -17,6 +17,8 @@
 
 #include "raw_motor_controller/serialconnection.h"
 
+#include <ros/ros.h>
+
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -83,6 +85,7 @@ bool SerialConnection::recieve_line(std::stringstream &buffer)
 bool SerialConnection::send_data(const std::string &data)
 {
     int written_bytes = write(fd, data.c_str(), data.length());
+    ROS_INFO_STREAM("Wrote " << written_bytes << " bytes");
     return written_bytes == data.length();
 }
 
