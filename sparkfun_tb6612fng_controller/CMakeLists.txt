@@ -59,17 +59,17 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+  FILES
+  MotorCommand.action
+)
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   actionlib_msgs#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  actionlib_msgs
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -129,16 +129,16 @@ include_directories(
 # add_dependencies(sparkfun_tb6612fng_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(sparkfun_tb6612fng_controller_node src/sparkfun_tb6612fng_controller_node.cpp)
+add_executable(sparkfun_tb6612fng_controller_node src/main.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(sparkfun_tb6612fng_controller_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sparkfun_tb6612fng_controller_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(sparkfun_tb6612fng_controller_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(sparkfun_tb6612fng_controller_node
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
