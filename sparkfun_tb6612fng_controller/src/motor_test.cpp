@@ -18,6 +18,11 @@ int main(int argc, char* argv[]) {
         msg.motor = 0;
         
         publisher.publish(msg);
+        
+        msg.motor =  1;
+        
+        publisher.publish(msg);
+        
         ros::spinOnce();
         r.sleep();
     }
@@ -26,6 +31,10 @@ int main(int argc, char* argv[]) {
     msg.direction = false;
     msg.speed = 0;
     msg.motor = 0;
+    
+    publisher.publish(msg);
+    
+    msg.motor = 1;
     
     publisher.publish(msg);
     

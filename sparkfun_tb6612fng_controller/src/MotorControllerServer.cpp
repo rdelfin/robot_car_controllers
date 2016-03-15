@@ -1,8 +1,8 @@
 #include <sparkfun_tb6612fng_controller/MotorControllerServer.h>
 
-MotorControllerServer::MotorControllerServer(std::string name, int pwmPin, int dir1Pin, int dir2Pin, int standbyPin)
+MotorControllerServer::MotorControllerServer(std::string name, int pwmAPin, int dir1APin, int dir2APin, int pwmBPin, int dir1BPin, int dir2BPin, int standbyPin)
     : topic_name(name),
-      interface(pwmPin, dir1Pin, dir2Pin, standbyPin)
+      interface(pwmAPin, dir1APin, dir2APin, pwmBPin, dir1BPin, dir2BPin, standbyPin)
 {
     subscriber = nh.subscribe(name, 100, &MotorControllerServer::executeCB, this);
 }

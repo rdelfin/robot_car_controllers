@@ -9,8 +9,8 @@ namespace sf_motor {
           pwmBPin(pwmBPin), dir1BPin(dir1BPin), dir2BPin(dir2BPin),
           standbyPin(standbyPin)
     {
-        softPwmCreate(pwmAPin, 100);
-        softPwmCreate(pwmBPin, 100);
+        softPwmCreate(pwmAPin, 0, 100);
+        softPwmCreate(pwmBPin, 0, 100);
         pinMode(dir1APin, OUTPUT);
         pinMode(dir2APin, OUTPUT);
         pinMode(dir1BPin, OUTPUT);

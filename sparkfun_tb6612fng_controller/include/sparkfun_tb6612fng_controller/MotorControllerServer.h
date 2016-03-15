@@ -4,7 +4,7 @@
 
 class MotorControllerServer {
 public:
-    MotorControllerServer(std::string name, int pwmPin, int dir1Pin, int dir2Pin, int standbyPin);
+    MotorControllerServer(std::string name, int pwmAPin, int dir1APin, int dir2APin, int pwmBPin, int dir1BPin, int dir2BPin, int standbyPin);
     
     void executeCB(const sparkfun_tb6612fng_controller::MotorCommand::ConstPtr &goal);
     
