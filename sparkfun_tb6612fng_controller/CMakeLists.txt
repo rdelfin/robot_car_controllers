@@ -12,8 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(Boost REQUIRED COMPONENTS system)
+find_package(WiringPi REQUIRED)
+find_package(Threads REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -115,7 +116,9 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include/
   ${catkin_INCLUDE_DIRS}
+  ${WIRINGPI_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -129,15 +132,20 @@ include_directories(
 # add_dependencies(sparkfun_tb6612fng_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(sparkfun_tb6612fng_controller_node src/main.cpp)
+add_executable(motors_node
+                 src/main.cpp
+                 src/DriverInterface.cpp
+                 src/MotorControllerServer.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(sparkfun_tb6612fng_controller_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(motors_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(sparkfun_tb6612fng_controller_node
+target_link_libraries(motors_node
   ${catkin_LIBRARIES}
+  ${WIRINGPI_LIBRARIES}
+  ${CMAKE_THREAD_LIBS_INIT}
 )
 
 #############
