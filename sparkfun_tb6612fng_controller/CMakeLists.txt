@@ -148,6 +148,19 @@ target_link_libraries(motors_node
   ${CMAKE_THREAD_LIBS_INIT}
 )
 
+
+# Motor test executable
+add_executable(motor_test_node
+               src/motor_test.cpp)               
+
+add_dependencies(motor_test_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(motor_test_node
+  ${catkin_LIBRARIES}
+  ${WIRINGPI_LIBRARIES}
+  ${CMAKE_THREAD_LIBS_INIT}
+)
+
 #############
 ## Install ##
 #############

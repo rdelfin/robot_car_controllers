@@ -5,7 +5,9 @@ MotorControllerServer::MotorControllerServer(std::string name, int pwmPin, int d
       action_name(name),
       interface(pwmPin, dir1Pin, dir2Pin, standbyPin)
 {
+    ROS_INFO("Starting server...");
     server.start();
+    ROS_INFO("Started!");
 }
 
 void MotorControllerServer::executeCB(const sparkfun_tb6612fng_controller::MotorCommandGoalConstPtr& goal)
@@ -13,6 +15,11 @@ void MotorControllerServer::executeCB(const sparkfun_tb6612fng_controller::Motor
     bool direction = goal->direction;
     float speed = goal->speed;
     int8_t motor = goal->motor;
+    
+    ROS_INFO_STREAM("Recieved request: " <<
+                    "(Dir: " << direction <<
+                    ", Speed: " << speed <<
+                    ", Motor: " << motor << ")");
     
     interface.send(direction, speed, motor);
     
