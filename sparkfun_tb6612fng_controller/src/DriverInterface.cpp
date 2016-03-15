@@ -1,34 +1,62 @@
 #include <sparkfun_tb6612fng_controller/DriverInterface.h>
+#include <wiringPi.h>
+#include <softPwm.h>
+#include <ros/ros.h>
 
 namespace sf_motor {
-    DriverInterface::DriverInterface(int pwmPin, int dir1Pin, int dir2Pin, int standbyPin)
-        : pwmPin(pwmPin), dir1Pin(dir1Pin), dir2Pin(dir2Pin), standbyPin(standbyPin)
+    DriverInterface::DriverInterface(int pwmAPin, int dir1APin, int dir2APin, int pwmBPin, int dir1BPin, int dir2BPin, int standbyPin)
+        : pwmAPin(pwmAPin), dir1APin(dir1APin), dir2APin(dir2APin), 
+          pwmBPin(pwmBPin), dir1BPin(dir1BPin), dir2BPin(dir2BPin),
+          standbyPin(standbyPin)
     {
-        pinMode(pwmPin, PWM_OUTPUT);
-        pinMode(dir1Pin, OUTPUT);
-        pinMode(dir2Pin, OUTPUT);
+        softPwmCreate(pwmAPin, 100);
+        softPwmCreate(pwmBPin, 100);
+        pinMode(dir1APin, OUTPUT);
+        pinMode(dir2APin, OUTPUT);
+        pinMode(dir1BPin, OUTPUT);
+        pinMode(dir2BPin, OUTPUT);
         pinMode(standbyPin, OUTPUT);
-        
-        
-        pwmSetMode(PWM_MODE_MS); 
-        pwmSetClock(384);
-        pwmSetRange(1000);
     }
     
     void DriverInterface::send(bool direction, double speed, bool motor)
     {
-        digitalWrite(dir1Pin, direction ? HIGH : LOW);
-        digitalWrite(dir2Pin, direction ? LOW: HIGH);
+        if(speed < 0) {
+            speed *= -1;
+            ROS_WARN("Warning: Speed cannot be negative. Making positive...");
+            
+        }
+        
+        if(speed > 1) {
+            speed = 1;
+            ROS_WARN("Warning: Speed cannot be more than 1. Lowering to 1...");
+        }
+        
+        // More readable than if(motor)
+        if(motor == 0) {
+            digitalWrite(dir1APin, direction ? HIGH : LOW);
+            digitalWrite(dir2APin, direction ? LOW: HIGH);
+            softPwmWrite(pwmAPin, (int)(speed * 100));
+        }
+        else {
+            digitalWrite(dir1BPin, direction ? HIGH : LOW);
+            digitalWrite(dir2BPin, direction ? LOW: HIGH);
+            softPwmWrite(pwmBPin, (int)(speed * 100));
+        }
+        
         digitalWrite(standbyPin, HIGH);
-        pwmWrite(pwmPin, (int)(speed * 1024));
     }
 
     DriverInterface::~DriverInterface()
     {
-        digitalWrite(dir1Pin, LOW);
-        digitalWrite(dir2Pin, LOW);
+        digitalWrite(dir1APin, LOW);
+        digitalWrite(dir2APin, LOW);
+        digitalWrite(dir1BPin, LOW);
+        digitalWrite(dir2BPin, LOW);
         digitalWrite(standbyPin, LOW);
-        pwmWrite(pwmPin, 0);
+        softPwmWrite(pwmAPin, 0);
+        softPwmWrite(pwmBPin, 0);
+        softPwmStop(pwmAPin);
+        softPwmStop(pwmBPin);
     }
 
 }

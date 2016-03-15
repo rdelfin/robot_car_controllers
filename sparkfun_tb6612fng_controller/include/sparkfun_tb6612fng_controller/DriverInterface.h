@@ -1,17 +1,19 @@
 #include <ros/ros.h>
-#include <wiringPi.h>
 
 namespace sf_motor {
     class DriverInterface {
     public:
-        DriverInterface(int pwmPin, int dir1Pin, int dir2Pin,
+        DriverInterface(int pwmAPin, int dir1APin, int dir2APin,
+                        int pwmBPin, int dir1BPin, int dir2BPin,
                         int standbyPin);
         
         void send(bool direction, double speed, bool motor);
         
         ~DriverInterface();
     private:
-        int pwmPin, dir1Pin, dir2Pin, standbyPin;
+        int standbyPin;
+        int pwmAPin, dir1APin, dir2APin;
+        int pwmBPin, dir1BPin, dir2BPin;
         
     };
 }
