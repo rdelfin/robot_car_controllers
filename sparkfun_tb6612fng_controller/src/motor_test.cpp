@@ -1,7 +1,6 @@
 #include <ros/ros.h>
-#include <actionlib/client/simple_action_client.h>
 
-#include <sparkfun_tb6612fng_controller/MotorCommandAction.h>
+#include <sparkfun_tb6612fng_controller/MotorCommand.h>
 
 namespace sf = sparkfun_tb6612fng_controller;
 
@@ -10,27 +9,25 @@ int main(int argc, char* argv[]) {
     ros::NodeHandle node;
     ros::Rate r(20);
     
-    actionlib::SimpleActionClient<sf::MotorCommandAction> client("sparkfun_tb6612fng_controller/front", true);
+    ros::Publisher publisher = node.advertise<sf::MotorCommand>("sparkfun_tb6612fng_controller/front", 100);
     
     while(ros::ok()) {
-        sf::MotorCommandGoal goal;
-        goal.direction = true;
-        goal.speed = 1;
-        goal.motor = 0;
+        sf::MotorCommand msg;
+        msg.direction = true;
+        msg.speed = 1;
+        msg.motor = 0;
         
-        ROS_INFO("Sending goal...");
-        client.sendGoalAndWait(goal);
-        ROS_INFO("Sent");
+        publisher.publish(msg);
         ros::spinOnce();
         r.sleep();
     }
     
-    sf::MotorCommandGoal goal;
-    goal.direction = true;
-    goal.speed = 0;
-    goal.motor = 0;
+    sf::MotorCommand msg;
+    msg.direction = false;
+    msg.speed = 0;
+    msg.motor = 0;
     
-    client.sendGoalAndWait(goal);
+    publisher.publish(msg);
     
     return 0;
 }

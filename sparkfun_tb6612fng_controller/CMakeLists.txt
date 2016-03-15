@@ -132,7 +132,8 @@ include_directories(
 add_executable(motors_node
                  src/main.cpp
                  src/DriverInterface.cpp
-                 src/MotorControllerServer.cpp)
+                 src/MotorControllerServer.cpp
+ )
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
