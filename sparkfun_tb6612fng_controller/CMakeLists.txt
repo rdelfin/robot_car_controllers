@@ -5,10 +5,9 @@ project(sparkfun_tb6612fng_controller)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
   roscpp
   std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -46,11 +45,10 @@ find_package(Threads REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  MotorCommand.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -60,15 +58,14 @@ find_package(Threads REQUIRED)
 # )
 
 ## Generate actions in the 'action' folder
-add_action_files(
-  FILES
-  MotorCommand.action
-)
+# add_action_files(
+#   FILES
+#   MotorCommand.action
+# )
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  actionlib_msgs
   std_msgs
 )
 
