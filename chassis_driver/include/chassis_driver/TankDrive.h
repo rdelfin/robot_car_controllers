@@ -7,8 +7,12 @@ class TankDrive {
 
 public:
     TankDrive();
-    TankDrive(std::strinv frontTopic, std::string backTopic);
-    ~TankDrive();
-    private:
+    TankDrive(std::string frontTopic, std::string backTopic);
     
+    drive(double left, double right);
+    
+    ~TankDrive();
+private:
+    ros::Publisher frontPub, backPub;
+    ros::NodeHandle nh;
 };
