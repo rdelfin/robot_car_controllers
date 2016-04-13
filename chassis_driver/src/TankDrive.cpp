@@ -4,17 +4,18 @@
 namespace sf = sparkfun_tb6612fng_controller;
 
 TankDrive::TankDrive()
+    : frontPub(), backPub()
 {
 
 }
 
-TankDrive::TankDrive(ros::Publisher& frontTopic, ros::Publisher& backTopic)
+TankDrive::TankDrive(ros::Publisher* frontTopic, ros::Publisher* backTopic)
     : frontPub(frontTopic), backPub(backTopic)
 {
     
 }
 
-TankDrive::drive(double left, double right)
+void TankDrive::drive(double left, double right)
 {
     sf::MotorCommand msgFrontLeft, msgFrontRight, msgBackLeft, msgBackRight;
     
@@ -31,10 +32,10 @@ TankDrive::drive(double left, double right)
     msgBackRight.motor = 1;
     
     
-    frontPub.publish(msgFrontLeft);
-    frontPub.publish(msgFrontRight);
-    backPub.publish(msgBackLeft);
-    backPub.publish(msgBackRight);
+    frontPub->publish(msgFrontLeft);
+    frontPub->publish(msgFrontRight);
+    backPub->publish(msgBackLeft);
+    backPub->publish(msgBackRight);
 }
 
 TankDrive::~TankDrive()

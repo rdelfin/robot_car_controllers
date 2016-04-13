@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(chassis_driver)
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+
+project(chassis_driver CXX)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -9,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sparkfun_tb6612fng_controller
   std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -26,7 +28,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## To declare and build messages, services or actions from within this
 ## package, follow these steps:
-nh## * Let MSG_DEP_SET be the set of packages whose message types you use in
+## * Let MSG_DEP_SET be the set of packages whose message types you use in
 ##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
 ## * In the file package.xml:
 ##   * add a build_depend tag for "message_generation"
@@ -45,11 +47,10 @@ nh## * Let MSG_DEP_SET be the set of packages whose message types you use in
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  TankDriveMessage.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -66,10 +67,10 @@ nh## * Let MSG_DEP_SET be the set of packages whose message types you use in
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -103,7 +104,7 @@ nh## * Let MSG_DEP_SET be the set of packages whose message types you use in
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES chassis_driver
-  CATKIN_DEPENDS roscpp rospy sparkfun_tb6612fng_controller std_msgs
+  CATKIN_DEPENDS roscpp rospy sparkfun_tb6612fng_controller std_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -140,6 +141,8 @@ add_dependencies(chassis_drive_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${
 target_link_libraries(chassis_drive_controller
   ${catkin_LIBRARIES}
 )
+
+target_compile_features(chassis_drive_controller PRIVATE cxx_range_for)
 
 #############
 ## Install ##

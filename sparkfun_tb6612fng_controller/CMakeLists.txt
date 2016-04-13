@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(sparkfun_tb6612fng_controller)
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
+project(sparkfun_tb6612fng_controller CXX)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -146,6 +148,8 @@ target_link_libraries(motors_node
   ${CMAKE_THREAD_LIBS_INIT}
 )
 
+target_compile_features(motors_node PRIVATE cxx_range_for)
+
 
 # Motor test executable
 add_executable(motor_test_node
@@ -158,6 +162,8 @@ target_link_libraries(motor_test_node
   ${WIRINGPI_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
 )
+
+target_compile_features(motor_test_node PRIVATE cxx_range_for)
 
 #############
 ## Install ##
