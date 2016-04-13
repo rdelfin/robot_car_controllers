@@ -8,10 +8,10 @@ TankDrive::TankDrive()
 
 }
 
-TankDrive::TankDrive(std::string frontTopic, std::string backTopic)
+TankDrive::TankDrive(ros::Publisher& frontTopic, ros::Publisher& backTopic)
+    : frontPub(frontTopic), backPub(backTopic)
 {
-    frontPub = nh::advertise<sf::MotorCommand>(frontTopic, 10);
-    backPub = nh::advertise<sf::MotorCommand>(backTopic, 10);
+    
 }
 
 TankDrive::drive(double left, double right)
@@ -35,7 +35,6 @@ TankDrive::drive(double left, double right)
     frontPub.publish(msgFrontRight);
     backPub.publish(msgBackLeft);
     backPub.publish(msgBackRight);
-    
 }
 
 TankDrive::~TankDrive()
