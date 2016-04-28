@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
-project(sparkfun_tb6612fng_controller)
+project(chassis_driver)
 
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
@@ -13,20 +13,20 @@ else()
         message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
+  sparkfun_tb6612fng_controller
   std_msgs
-  message_generation
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system)
-find_package(WiringPi REQUIRED)
-find_package(Threads REQUIRED)
+# find_package(Boost REQUIRED COMPONENTS system)
+
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -58,10 +58,11 @@ find_package(Threads REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  MotorCommand.msg
-)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -73,14 +74,15 @@ add_message_files(
 ## Generate actions in the 'action' folder
 # add_action_files(
 #   FILES
-#   MotorCommand.action
+#   Action1.action
+#   Action2.action
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -113,8 +115,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES sparkfun_tb6612fng_controller
-#  CATKIN_DEPENDS actionlib actionlib_msgs roscpp std_msgs
+#  LIBRARIES chassis_driver
+  CATKIN_DEPENDS roscpp rospy sparkfun_tb6612fng_controller std_msgs geometry_msgs
 #  DEPENDS system_lib
 )
 
@@ -126,51 +128,33 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
-  include/
   ${catkin_INCLUDE_DIRS}
-  ${WIRINGPI_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(sparkfun_tb6612fng_controller
-#   src/${PROJECT_NAME}/sparkfun_tb6612fng_controller.cpp
+# add_library(chassis_driver
+#   src/${PROJECT_NAME}/chassis_driver.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(sparkfun_tb6612fng_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(chassis_driver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(motors_node
-                 src/main.cpp
-                 src/DriverInterface.cpp
-                 src/MotorControllerServer.cpp
- )
+add_executable(chassis_drive_node src/chassis_drive_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(motors_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(chassis_drive_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(motors_node
+target_link_libraries(chassis_drive_node
   ${catkin_LIBRARIES}
-  ${WIRINGPI_LIBRARIES}
-  ${CMAKE_THREAD_LIBS_INIT}
 )
 
-# Motor test executable
-add_executable(motor_test_node
-               src/motor_test.cpp)               
-
-add_dependencies(motor_test_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(motor_test_node
-  ${catkin_LIBRARIES}
-  ${WIRINGPI_LIBRARIES}
-  ${CMAKE_THREAD_LIBS_INIT}
-)
-
+catkin_install_python(PROGRAMS scripts/teleop_twist_keyboard
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #############
 ## Install ##
@@ -187,7 +171,7 @@ target_link_libraries(motor_test_node
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS sparkfun_tb6612fng_controller sparkfun_tb6612fng_controller_node
+# install(TARGETS chassis_driver chassis_driver_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -212,7 +196,7 @@ target_link_libraries(motor_test_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_sparkfun_tb6612fng_controller.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_chassis_driver.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

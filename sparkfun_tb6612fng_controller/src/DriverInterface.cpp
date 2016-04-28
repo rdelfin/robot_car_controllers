@@ -18,11 +18,11 @@ namespace sf_motor {
         pinMode(standbyPin, OUTPUT);
     }
     
-    void DriverInterface::send(bool direction, double speed, bool motor)
+    void DriverInterface::send(double speed, bool motor)
     {
-        if(speed < 0) {
-            speed *= -1;
-            ROS_WARN("Warning: Speed cannot be negative. Making positive...");
+        if(speed < -1) {
+            speed = -1;
+            ROS_WARN("Warning: Speed cannot be Less than 1. Raising to -1...");
             
         }
         
@@ -33,14 +33,14 @@ namespace sf_motor {
         
         // More readable than if(motor)
         if(motor == 0) {
-            digitalWrite(dir1APin, direction ? HIGH : LOW);
-            digitalWrite(dir2APin, direction ? LOW: HIGH);
-            softPwmWrite(pwmAPin, (int)(speed * 100));
+            digitalWrite(dir1APin, (speed < 0) ? HIGH : LOW);
+            digitalWrite(dir2APin, (speed < 0) ? LOW: HIGH);
+            softPwmWrite(pwmAPin, (int)(fabs(speed) * 100));
         }
         else {
-            digitalWrite(dir1BPin, direction ? HIGH : LOW);
-            digitalWrite(dir2BPin, direction ? LOW: HIGH);
-            softPwmWrite(pwmBPin, (int)(speed * 100));
+            digitalWrite(dir1BPin, (speed < 0) ? HIGH : LOW);
+            digitalWrite(dir2BPin, (speed < 0) ? LOW: HIGH);
+            softPwmWrite(pwmBPin, (int)(fabs(speed) * 100));
         }
         
         digitalWrite(standbyPin, HIGH);
