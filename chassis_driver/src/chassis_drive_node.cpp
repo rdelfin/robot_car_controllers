@@ -30,16 +30,16 @@ void movebaseCallback(const geometry_msgs::TwistConstPtr& msg)
     
     sf::MotorCommand msgFrontLeft, msgFrontRight, msgBackLeft, msgBackRight;
     
-    msgFrontLeft.speed = speed + rotation;
+    msgFrontLeft.speed = speed - rotation;
     msgFrontLeft.motor = 0;
     
-    msgFrontRight.speed = -(speed - rotation);
+    msgFrontRight.speed = -(speed + rotation);
     msgFrontRight.motor = 1;
     
-    msgBackLeft.speed = -(speed + rotation);
+    msgBackLeft.speed = -(speed - rotation);
     msgBackLeft.motor = 0;
     
-    msgBackRight.speed = speed - rotation;
+    msgBackRight.speed = speed + rotation;
     msgBackRight.motor = 1;
     
     
