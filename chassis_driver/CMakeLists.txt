@@ -21,7 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sparkfun_tb6612fng_controller
   std_msgs
-  message_generation
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -58,11 +58,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  TankDriveMessage.msg
-  ArcadeDriveMessage.msg
-)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -79,10 +79,10 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -114,9 +114,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
+#  INCLUDE_DIRS include
 #  LIBRARIES chassis_driver
-  CATKIN_DEPENDS roscpp rospy sparkfun_tb6612fng_controller std_msgs message_runtime
+  CATKIN_DEPENDS roscpp rospy sparkfun_tb6612fng_controller std_msgs geometry_msgs
 #  DEPENDS system_lib
 )
 
@@ -128,7 +128,6 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -143,14 +142,14 @@ include_directories(
 # add_dependencies(chassis_driver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(chassis_drive_controller src/chassis_controller.cpp src/TankDrive.cpp  src/ArcadeDrive.cpp)
+add_executable(chassis_drive_node src/chassis_drive_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(chassis_drive_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(chassis_drive_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(chassis_drive_controller
+target_link_libraries(chassis_drive_node
   ${catkin_LIBRARIES}
 )
 
