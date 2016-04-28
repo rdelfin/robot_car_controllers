@@ -7,7 +7,7 @@ namespace sf_motor {
                         int pwmBPin, int dir1BPin, int dir2BPin,
                         int standbyPin);
         
-        void send(bool direction, double speed, bool motor);
+        void send(double speed, bool motor);
         
         ~DriverInterface();
     private:

@@ -9,16 +9,14 @@ MotorControllerServer::MotorControllerServer(std::string name, int pwmAPin, int 
 
 void MotorControllerServer::executeCB(const sparkfun_tb6612fng_controller::MotorCommand::ConstPtr& msg)
 {
-    bool direction = msg->direction;
     float speed = msg->speed;
     int8_t motor = msg->motor;
     
     ROS_INFO_STREAM("Recieved request: " <<
-                    "(Dir: " << direction <<
                     ", Speed: " << speed <<
                     ", Motor: " << motor << ")");
     
-    interface.send(direction, speed, motor);
+    interface.send(speed, motor);
 }
 
 

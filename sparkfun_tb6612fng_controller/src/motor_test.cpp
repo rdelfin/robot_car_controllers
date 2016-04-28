@@ -13,7 +13,6 @@ int main(int argc, char* argv[]) {
     ros:: Publisher publisher2 = node.advertise<sf::MotorCommand>("sparkfun_tb6612fng_controller/back", 100);
     while(ros::ok()) {
         sf::MotorCommand msg;
-        msg.direction = true;
         msg.speed = 1;
         msg.motor = 0;
         
@@ -29,7 +28,6 @@ int main(int argc, char* argv[]) {
     }
     
     sf::MotorCommand msg;
-    msg.direction = false;
     msg.speed = 0;
     msg.motor = 0;
     
