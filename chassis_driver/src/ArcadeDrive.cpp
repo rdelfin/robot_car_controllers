@@ -24,10 +24,10 @@ void ArcadeDrive::drive(double speed, double rotation)
     msgFrontLeft.speed = speed + rotation;
     msgFrontLeft.motor = 0;
     
-    msgFrontRight.speed = speed - rotation;
+    msgFrontRight.speed = -(speed - rotation);
     msgFrontRight.motor = 1;
     
-    msgBackLeft.speed = speed + rotation;
+    msgBackLeft.speed = -(speed + rotation);
     msgBackLeft.motor = 0;
     
     msgBackRight.speed = speed - rotation;

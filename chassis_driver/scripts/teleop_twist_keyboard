@@ -11,7 +11,7 @@
 
 import rospy
 
-from robot_car_controllers.msg import ArcadeDriveMessage
+from chassis_driver.msg import ArcadeDriveMessage
 
 import sys, select, termios, tty
 
