@@ -17,20 +17,20 @@ ArcadeDrive::ArcadeDrive(ros::Publisher* frontTopic, ros::Publisher* backTopic)
 
 void ArcadeDrive::drive(double speed, double rotation)
 {
-    
-    
     sf::MotorCommand msgFrontLeft, msgFrontRight, msgBackLeft, msgBackRight;
     
-    msgFrontLeft.speed = 0;
+    
+    
+    msgFrontLeft.speed = speed + rotation;
     msgFrontLeft.motor = 0;
     
-    msgFrontRight.speed = 0;
+    msgFrontRight.speed = speed - rotation;
     msgFrontRight.motor = 1;
     
-    msgBackLeft.speed = 0;
+    msgBackLeft.speed = speed + rotation;
     msgBackLeft.motor = 0;
     
-    msgBackRight.speed = 0;
+    msgBackRight.speed = speed - rotation;
     msgBackRight.motor = 1;
     
     
