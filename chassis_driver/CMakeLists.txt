@@ -50,6 +50,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   TankDriveMessage.msg
+  ArcadeDriveMessage.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -131,7 +132,7 @@ include_directories(
 # add_dependencies(chassis_driver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(chassis_drive_controller src/chassis_controller.cpp src/TankDrive.cpp)
+add_executable(chassis_drive_controller src/chassis_controller.cpp src/TankDrive.cpp  src/ArcadeDrive.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -143,6 +144,11 @@ target_link_libraries(chassis_drive_controller
 )
 
 target_compile_features(chassis_drive_controller PRIVATE cxx_range_for)
+
+
+
+catkin_install_python(PROGRAMS scripts/teleop_twist_keyboard
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #############
 ## Install ##
